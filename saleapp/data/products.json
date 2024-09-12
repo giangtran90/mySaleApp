@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "iphone 14",
+    "description": "Apple, 128GB, RAM: 6GB",
+    "price": 15000000,
+    "image": "images/pn1.jpg",
+    "category_id": 1
+  },
+  {
+    "id": 2,
+    "name": "iphone 15",
+    "description": "Apple, 128GB, RAM: 6GB",
+    "price": 20000000,
+    "image": "images/pn2.jpg",
+    "category_id": 1
+  },
+  {
+    "id": 3,
+    "name": "ipad Pro 11",
+    "description": "Apple, 128GB, RAM: 6GB",
+    "price": 14000000,
+    "image": "images/pn3.jpg",
+    "category_id": 2
+  }
+]

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HomePage</title>
+    <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet">
+</head>
+<body>
+    <h1 class="subject">Chao mung den trang ban hang truc tuyen</h1>
+    <ul>
+        <li><a href="{{url_for('listProduct')}}">Tat ca san pham</a></li>
+        {% for c in catgories %}
+        <li><a href="{{url_for('listProduct', category_id = c.id)}}">{{c.name}}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
