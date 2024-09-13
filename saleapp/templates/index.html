@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>HomePage</title>
-    <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet">
-</head>
-<body>
+{% extends 'layout/base.html' %}
+
+{% block title %}Trang Chu{% endblock %}
+
+{% block content %}
     <h1 class="subject">Chao mung den trang ban hang truc tuyen</h1>
     <ul>
         <li><a href="{{url_for('listProduct')}}">Tat ca san pham</a></li>
@@ -13,5 +10,4 @@
         <li><a href="{{url_for('listProduct', category_id = c.id)}}">{{c.name}}</a></li>
         {% endfor %}
     </ul>
-</body>
-</html>
+{% endblock %}
