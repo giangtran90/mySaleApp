@@ -4,10 +4,30 @@
 
 {% block content %}
     <h1 class="subject">Chao mung den trang ban hang truc tuyen</h1>
-    <ul>
-        <li><a href="{{url_for('listProduct')}}">Tat ca san pham</a></li>
-        {% for c in catgories %}
-        <li><a href="{{url_for('listProduct', category_id = c.id)}}">{{c.name}}</a></li>
-        {% endfor %}
-    </ul>
+<!--    <ul>-->
+<!--        <li><a href="{{url_for('listProduct')}}">Tat ca san pham</a></li>-->
+<!--        {% for c in catgories %}-->
+<!--        <li><a href="{{url_for('listProduct', category_id = c.id)}}">{{c.name}}</a></li>-->
+<!--        {% endfor %}-->
+<!--    </ul>-->
+    <div class="container">
+        {% if products %}
+        <div class="row d-flex">
+            {% for p in products %}
+            <div class="col-md-3 col-xs-12" style="padding:5px">
+                <div class="card" style="padding:5px">
+                  <img class="card-img-top" src="{{url_for('static', filename = p.image)}}" alt="{{p.name}}">
+                  <div class="card-body">
+                    <h4 class="card-title">{{p.name}}</h4>
+                    <p class="card-text">{{"{:,.1f}".format(p.price)}}</p>
+                    <a href="#" class="btn btn-primary">Dat Hang</a>
+                  </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p><i>Khong co san pham nao!!!</i></p>
+        {% endif %}
+    </div>
 {% endblock %}

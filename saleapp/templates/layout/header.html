@@ -18,14 +18,20 @@
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+        <a class="nav-link {% if 'category_id' not in request.args %}active{% endif %}" href="/">Trang Chu</a>
       </li>
+      {% for c in categories %}
       <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+        <a class="nav-link {% if 'category_id' in request.args and c.id == request.args.category_id|int %}active{% endif %}"
+           href="{{url_for('home', category_id = c.id)}}">{{c.name}}</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
-      </li>
+      {% endfor %}
     </ul>
   </div>
+
+  <!-- them form tim kiem, vi action la gui vao trang chu nen khong can -->
+  <form class="form-inline">
+    <input class="form-control mr-sm-2" type="text" name="keyword" placeholder="Nhap tu khoa...">
+    <button class="btn btn-success" type="submit">Tim kiem</button>
+  </form>
 </nav>
