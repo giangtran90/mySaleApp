@@ -7,3 +7,5 @@ Hoc kien thuc co ban ve flask trong python qua du an web
     Can cai dat: pip install flask-sqlalchemy pymysql
 - thuc hien tao trang admin bang flask-admin duoc ho tro san
     pip install flask-admin
+- tao mot trang base.html dung chung cau hinh cho file do de sau ke thua lai template
+    tao cac block de sau chi viec ke thua lai
