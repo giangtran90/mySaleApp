@@ -1,12 +1,16 @@
 from flask import render_template, request
 from saleapp import app
 import utils
+from saleapp.models import products
 
 
 @app.route("/")
 def home():
     cates = utils.load_categories()
-    return render_template('index.html', catgories = cates)
+    cate_id = request.args.get("category_id")
+    keyword = request.args.get("keyword")
+    products = utils.load_products(cate_id=cate_id, keyword=keyword)
+    return render_template('index.html', categories = cates, products = products)
 
 @app.route("/products")
 def listProduct():
