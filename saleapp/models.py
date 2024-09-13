@@ -66,35 +66,36 @@ with app.app_context():
     # db.session.commit()
     """
     them du lieu vao bang tu tep json
+    khi muon test voi session thi khong nen comment lai
     """
-    # products = [
-    #               {
-    #                 "id": 1,
-    #                 "name": "iphone 14",
-    #                 "description": "Apple, 128GB, RAM: 6GB",
-    #                 "price": 15000000,
-    #                 "image": "images/pn1.jpg",
-    #                 "category_id": 1
-    #               },
-    #               {
-    #                 "id": 2,
-    #                 "name": "iphone 15",
-    #                 "description": "Apple, 128GB, RAM: 6GB",
-    #                 "price": 20000000,
-    #                 "image": "images/pn2.jpg",
-    #                 "category_id": 1
-    #               },
-    #               {
-    #                 "id": 3,
-    #                 "name": "ipad Pro 11",
-    #                 "description": "Apple, 128GB, RAM: 6GB",
-    #                 "price": 14000000,
-    #                 "image": "images/pn3.jpg",
-    #                 "category_id": 2
-    #               }
-    #             ]
-    # for p in products:
-    #     prod = Product(name=p['name'],description=p['description'],price=p['price']
-    #                    ,image=p['image'],category_id=p['category_id'])
-    #     db.session.add(prod)
+    products = [
+                  {
+                    "id": 1,
+                    "name": "iphone 14",
+                    "description": "Apple, 128GB, RAM: 6GB",
+                    "price": 15000000,
+                    "image": "images/pn1.jpg",
+                    "category_id": 1
+                  },
+                  {
+                    "id": 2,
+                    "name": "iphone 15",
+                    "description": "Apple, 128GB, RAM: 6GB",
+                    "price": 20000000,
+                    "image": "images/pn2.jpg",
+                    "category_id": 1
+                  },
+                  {
+                    "id": 3,
+                    "name": "ipad Pro 11",
+                    "description": "Apple, 128GB, RAM: 6GB",
+                    "price": 14000000,
+                    "image": "images/pn3.jpg",
+                    "category_id": 2
+                  }
+                ]
+    for p in products:
+        prod = Product(name=p['name'],description=p['description'],price=p['price']
+                       ,image=p['image'],category_id=p['category_id'])
+        db.session.add(prod)
     # db.session.commit()
