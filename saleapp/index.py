@@ -28,4 +28,9 @@ def productDetail(product_id):
 
 
 if __name__ == '__main__':
+    """
+    import admin vao de khi chay no render ra trang admin
+    """
+    from saleapp.admin import *
+
     app.run(debug=True)
