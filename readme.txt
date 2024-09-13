@@ -5,3 +5,5 @@ Hoc kien thuc co ban ve flask trong python qua du an web
 	kich hoat flask: pip install flask
 - thuc hien ket noi du lieu bang mysql thong qua sqlAlchemy cua Flask
     Can cai dat: pip install flask-sqlalchemy pymysql
+- thuc hien tao trang admin bang flask-admin duoc ho tro san
+    pip install flask-admin
