@@ -1,3 +1,5 @@
+import math
+
 from flask import render_template, request
 from saleapp import app
 import utils
@@ -9,8 +11,17 @@ def home():
     cates = utils.load_categories()
     cate_id = request.args.get("category_id")
     keyword = request.args.get("keyword")
-    products = utils.load_products(cate_id=cate_id, keyword=keyword)
-    return render_template('index.html', categories = cates, products = products)
+    """
+    them vao args page => thuc hien phan trang
+    chu y la ep qua kieu so nguyen
+    """
+    page = int(request.args.get("page",1))
+    products = utils.load_products(cate_id=cate_id, keyword=keyword, page = page)
+    """
+    lay tong so trang
+    """
+    counter = utils.count_products()
+    return render_template('index.html', categories = cates, products = products, pages = math.ceil(counter/app.config['PAGE_SIZE']))
 
 @app.route("/products")
 def listProduct():

@@ -13,7 +13,10 @@ app.secret_key = '&6213$#%&%$#$&)(sfsdfsf#*-+*/'
 cau hinh thong so ket noi
 """
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/labsaledb?charset=utf8mb4'
-
+"""
+cai dat PAGE_SIZE de sau dung chung
+"""
+app.config['PAGE_SIZE'] = 4
 """
 Can cau hinh ket noi
 """

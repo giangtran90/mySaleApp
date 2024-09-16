@@ -1,4 +1,5 @@
 import json, os
+from turtledemo.penrose import start
 
 from unicodedata import category
 
@@ -30,7 +31,7 @@ def load_categories():
     return category
     # return read_json(os.path.join(app.root_path, 'data/categories.json'))
 
-def load_products(cate_id=None, keyword=None, from_price=None, to_price=None):
+def load_products(cate_id=None, keyword=None, from_price=None, to_price=None, page = 1):
     '''Cac mat hang kinh doanh phai la active true'''
     products = Product.query.filter(Product.active.__eq__(True))
 
@@ -46,7 +47,15 @@ def load_products(cate_id=None, keyword=None, from_price=None, to_price=None):
     if to_price:
         products = products.filter(Product.price.__le__(to_price))
 
-    return products.all() # them .all de neu khong co la no se do ra none
+    """
+    lay gia tri page_size dacai dat khi khoi tao
+    select * from product limit page_size offset 0
+    """
+    page_size = app.config['PAGE_SIZE']
+    start = (page - 1) * page_size
+    end = start + page_size
+
+    return products.slice(start, end).all() # them .all de neu khong co la no se do ra none
 
     # products = read_json(os.path.join(app.root_path, 'data/products.json'))
     #
@@ -72,3 +81,10 @@ def product_detail(product_id):
     # for p in products:
     #     if p["id"] == product_id:
     #         return p
+
+"""
+Lay toan bo danh sach san pham con active
+.count = select count(*) from products
+"""
+def count_products():
+    return Product.query.filter(Product.active.__eq__(True)).count()
