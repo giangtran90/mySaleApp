@@ -8,7 +8,6 @@ import utils
 
 @app.route("/")
 def home():
-    cates = utils.load_categories()
     cate_id = request.args.get("category_id")
     keyword = request.args.get("keyword")
     """
@@ -21,7 +20,7 @@ def home():
     lay tong so trang
     """
     counter = utils.count_products()
-    return render_template('index.html', categories = cates, products = products, pages = math.ceil(counter/app.config['PAGE_SIZE']))
+    return render_template('index.html', products = products, pages = math.ceil(counter/app.config['PAGE_SIZE']))
 
 """
 register co 2 methode la get, post de lay thong tin va dang ki thong tin
@@ -67,6 +66,14 @@ def productDetail(product_id):
     product = utils.product_detail(product_id)
     return  render_template('product_detail.html', product=product)
 
+"""
+su dung @app.context_processor: de no tu dog ap categories vao tat ca cac trang
+"""
+@app.context_processor
+def common_response():
+    return {
+        "categories" : utils.load_categories()
+    }
 
 if __name__ == '__main__':
     """
