@@ -9,7 +9,8 @@
   <div class="alert alert-danger">{{ err_msg }}</div>
   {% endif %}
 
-  <form method="post" action="{{ url_for('user_register') }}">
+  <!-- De upload anh chu y thuoc tinh enctype="multipart/form-data va method=post"-->
+  <form method="post" action="{{ url_for('user_register') }}" enctype="multipart/form-data">
     <div class="form-group">
       <label for="name">Ho ten</label>
       <input type="text" class="form-control" placeholder="Enter name" id="name" name="name" required>
@@ -29,6 +30,10 @@
     <div class="form-group">
       <label for="confirm">Xac nhan mat khau</label>
       <input type="password" class="form-control" placeholder="Enter confirm password" id="confirm" name="confirm">
+    </div>
+    <div class="form-group">
+      <label for="avatar">Avatar</label>
+      <input type="file" class="form-control" id="avatar" name="avatar">
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>

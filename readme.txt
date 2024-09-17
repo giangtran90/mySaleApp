@@ -11,3 +11,4 @@ Hoc kien thuc co ban ve flask trong python qua du an web
     tao cac block de sau chi viec ke thua lai
 - tao chuc nang phan trang Flask SqlAlchemy
 - tao dang ky nguoi dung va upload anh len web
+  +upload anh vao cloudinary : pip install coudinary
