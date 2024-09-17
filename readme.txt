@@ -12,3 +12,4 @@ Hoc kien thuc co ban ve flask trong python qua du an web
 - tao chuc nang phan trang Flask SqlAlchemy
 - tao dang ky nguoi dung va upload anh len web
   +upload anh vao cloudinary : pip install coudinary
+- Xu ly dang nhap nguoi dung
