@@ -10,3 +10,4 @@ Hoc kien thuc co ban ve flask trong python qua du an web
 - tao mot trang base.html dung chung cau hinh cho file do de sau ke thua lai template
     tao cac block de sau chi viec ke thua lai
 - tao chuc nang phan trang Flask SqlAlchemy
+- tao dang ky nguoi dung va upload anh len web
