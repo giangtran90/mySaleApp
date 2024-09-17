@@ -5,6 +5,7 @@ from sqlalchemy.orm import relationship
 from saleapp import db
 from datetime import datetime
 from saleapp import app
+from flask_login import UserMixin
 from enum import Enum as UserEnum
 
 """
@@ -26,8 +27,9 @@ class UserRole(UserEnum):
 
 """
 Tao bang user voi cac cot tuong ung
+Bằng cách thừa kế từ UserMixin, bạn không cần phải định nghĩa lại các phương thức is_authenticated(), is_active(), is_anonymous(), get_id() 
 """
-class User(BaseModel):
+class User(BaseModel, UserMixin):
     name = Column(String(50), nullable=False)
     username = Column(String(50), nullable=False, unique=True)
     password = Column(String(50), nullable=False)

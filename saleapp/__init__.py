@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 import cloudinary
 """
     xac dinh bien app se dung nhieu cho khac nhau nen dat ben trong init(file khoi dong package)
@@ -28,3 +29,7 @@ cloudinary.config(
     api_key= '911457233263351',
     api_secret= 'ynjQIgN2-hHGsH3jeEITP7Q6I1M'
 )
+"""
+tao bie login truyen app vao de no biet quan ly app nao cua minh
+"""
+login = LoginManager(app=app)

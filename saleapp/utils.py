@@ -1,7 +1,5 @@
 import json, os
 
-from wtforms.validators import email
-
 from saleapp import app, db
 from saleapp.models import Category, Product, User
 import hashlib # giup bam password
@@ -103,3 +101,15 @@ def add_user(name, username, password, **kwargs):
                 avatar=kwargs.get('avatar'))
     db.session.add(user)
     db.session.commit()
+
+"""
+check dang nhap, chu y password dang ky ma hoa the nao thi check cung nhu vay
+"""
+def check_login(username, password):
+    if username and password:
+        password = hashlib.md5(password.strip().encode('utf-8')).hexdigest()
+        return User.query.filter(User.username.__eq__(username.strip()),
+                                 User.password.__eq__(password)).first()
+
+def get_user_by_id(user_id):
+    return User.query.get(user_id)
