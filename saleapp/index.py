@@ -1,6 +1,6 @@
 import math
 
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, session, jsonify
 
 from saleapp import app, login
 import utils
@@ -72,6 +72,40 @@ def listProduct():
 def productDetail(product_id):
     product = utils.product_detail(product_id)
     return  render_template('product_detail.html', product=product)
+
+"""
+tao add cart
+"""
+@app.route('/api/add-cart', methods=['post'])
+def add_to_cart():
+    data = request.json
+    id = str(data.get('id'))
+    name = data.get('name')
+    price = data.get('price')
+
+    """lenh debug=> chay toi se dung lai cho minh debug"""
+    # import pdb
+    # pdb.set_trace()
+
+    cart = session.get("cart") # lay cart
+    if not cart:
+        cart = {}
+    if id in cart:
+        cart[id]['quantity'] = cart[id]['quantity'] + 1
+    else:
+        cart[id] = {
+            'id': id,
+            'name': name,
+            'price': price,
+            'quantity': 1
+        }
+
+    session['cart'] = cart
+    """
+    jsonify dung de chuyen doi sang dang json
+    """
+    strResultCart = jsonify(utils.count_cart(cart))
+    return strResultCart
 
 """
 chuc nang dang nhap

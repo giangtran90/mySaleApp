@@ -113,3 +113,19 @@ def check_login(username, password):
 
 def get_user_by_id(user_id):
     return User.query.get(user_id)
+
+"""
+Tao ham count chua cac thong tin ve so luong, don gia
+"""
+def count_cart(cart):
+    total_quantity, total_amount = 0, 0
+    if cart:
+        for c in cart.values():
+            total_quantity += c['quantity']
+            total_amount += c['quantity'] * c['price']
+
+        result = {
+            'total_quantity': total_quantity,
+            'total_amount': total_amount
+        }
+    return result
