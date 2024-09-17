@@ -4,35 +4,33 @@
 
 {% block content %}
     <h1 class="subject">Chao mung den trang ban hang truc tuyen</h1>
-    <div class="container">
-        <!-- neu so trang lon hon 1 thi moi hien phan trang -->
-        {% if pages > 1 %}
-        <ul class="pagination">
-          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-            {% for page in range (1,pages +1) %}
-          <li class="page-item"><a class="page-link" href="{{url_for('home', page = page)}}">{{page}}</a></li>
-            {% endfor %}
-          <li class="page-item"><a class="page-link" href="#">Next</a></li>
-        </ul>
-        {% endif %}
+    <!-- neu so trang lon hon 1 thi moi hien phan trang -->
+    {% if pages > 1 %}
+    <ul class="pagination">
+      <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+        {% for page in range (1,pages +1) %}
+      <li class="page-item"><a class="page-link" href="{{url_for('home', page = page)}}">{{page}}</a></li>
+        {% endfor %}
+      <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    </ul>
+    {% endif %}
 
-        {% if products %}
-        <div class="row d-flex">
-            {% for p in products %}
-            <div class="col-md-3 col-xs-12" style="padding:5px">
-                <div class="card" style="padding:5px">
-                  <img class="card-img-top" src="{{url_for('static', filename = p.image)}}" alt="{{p.name}}">
-                  <div class="card-body">
-                    <h4 class="card-title">{{p.name}}</h4>
-                    <p class="card-text">{{"{:,.1f}".format(p.price)}}</p>
-                    <a href="#" class="btn btn-primary">Dat Hang</a>
-                  </div>
-                </div>
+    {% if products %}
+    <div class="row d-flex">
+        {% for p in products %}
+        <div class="col-md-3 col-xs-12" style="padding:5px">
+            <div class="card" style="padding:5px">
+              <img class="card-img-top" src="{{url_for('static', filename = p.image)}}" alt="{{p.name}}">
+              <div class="card-body">
+                <h4 class="card-title">{{p.name}}</h4>
+                <p class="card-text">{{"{:,.1f}".format(p.price)}}</p>
+                <a href="#" class="btn btn-primary">Dat Hang</a>
+              </div>
             </div>
-            {% endfor %}
         </div>
-        {% else %}
-        <p><i>Khong co san pham nao!!!</i></p>
-        {% endif %}
+        {% endfor %}
     </div>
+    {% else %}
+    <p><i>Khong co san pham nao!!!</i></p>
+    {% endif %}
 {% endblock %}
