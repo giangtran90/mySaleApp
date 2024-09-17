@@ -4,6 +4,7 @@ from flask import render_template, request, redirect, url_for
 
 from saleapp import app
 import utils
+import cloudinary.uploader # de ho tro upload anh
 
 
 @app.route("/")
@@ -34,12 +35,17 @@ def user_register():
         password = request.form.get('password')
         email = request.form.get('email')
         confirm = request.form.get('confirm')
+        avatar_path = None
         """
         thuc hien xac nhan, neu mat khau nhap va xac nhan mat khau dung thi moi thuc hien add con neu khong thi se tra ra loi
         """
         try:
             if password.strip().__eq__(confirm.strip()):
-                utils.add_user(name=name,username=username,password=password,email=email)
+                avatar = request.files.get('avatar') # chu y la files chu ko phai form
+                if avatar:
+                    res = cloudinary.uploader.upload(avatar)
+                    avatar_path = res['secure_url'] # chu y res['secure_url'] lay duong dan flask cloudinary response data
+                utils.add_user(name=name,username=username,password=password,email=email, avatar=avatar_path)
                 return redirect(url_for('home'))
             else:
                 err_msg = 'Mat khau khong trung nhau!!!'

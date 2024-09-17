@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+import cloudinary
 """
     xac dinh bien app se dung nhieu cho khac nhau nen dat ben trong init(file khoi dong package)
     name: bien toan cuc truyen vao
@@ -21,3 +22,9 @@ app.config['PAGE_SIZE'] = 4
 Can cau hinh ket noi
 """
 db = SQLAlchemy(app=app)
+""""""
+cloudinary.config(
+    cloud_name= 'djdcw29s3',
+    api_key= '911457233263351',
+    api_secret= 'ynjQIgN2-hHGsH3jeEITP7Q6I1M'
+)
