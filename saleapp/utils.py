@@ -1,10 +1,10 @@
 import json, os
-from turtledemo.penrose import start
 
-from unicodedata import category
+from wtforms.validators import email
 
-from saleapp import app
-from saleapp.models import Category, Product, products
+from saleapp import app, db
+from saleapp.models import Category, Product, User
+import hashlib # giup bam password
 
 """
 Ham doc file json
@@ -88,3 +88,18 @@ Lay toan bo danh sach san pham con active
 """
 def count_products():
     return Product.query.filter(Product.active.__eq__(True)).count()
+
+"""
+Thuc hien dang ky user
+"""
+def add_user(name, username, password, **kwargs):
+    # bam password sau do moi luu vao CSDL
+    # .strip() : xoa khoang trang 2 dau
+    password = hashlib.md5(password.strip().encode('utf-8')).hexdigest()
+    user = User(name=name.strip(),
+                username=username.strip(),
+                password=password,
+                email=kwargs.get('email'),
+                avatar=kwargs.get('avatar'))
+    db.session.add(user)
+    db.session.commit()

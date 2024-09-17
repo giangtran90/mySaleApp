@@ -1,9 +1,9 @@
 import math
 
-from flask import render_template, request
+from flask import render_template, request, redirect, url_for
+
 from saleapp import app
 import utils
-from saleapp.models import products
 
 
 @app.route("/")
@@ -22,6 +22,32 @@ def home():
     """
     counter = utils.count_products()
     return render_template('index.html', categories = cates, products = products, pages = math.ceil(counter/app.config['PAGE_SIZE']))
+
+"""
+register co 2 methode la get, post de lay thong tin va dang ki thong tin
+"""
+@app.route('/register', methods = ['get', 'post'])
+def user_register():
+    err_msg = ''
+    if request.method.__eq__('POST'):
+        name = request.form.get('name')
+        username = request.form.get('username')
+        password = request.form.get('password')
+        email = request.form.get('email')
+        confirm = request.form.get('confirm')
+        """
+        thuc hien xac nhan, neu mat khau nhap va xac nhan mat khau dung thi moi thuc hien add con neu khong thi se tra ra loi
+        """
+        try:
+            if password.strip().__eq__(confirm.strip()):
+                utils.add_user(name=name,username=username,password=password,email=email)
+                return redirect(url_for('home'))
+            else:
+                err_msg = 'Mat khau khong trung nhau!!!'
+        except Exception as ex:
+            err_msg = 'Loi he thong!!!' + str(ex)
+
+    return render_template('register.html', err_msg=err_msg)
 
 @app.route("/products")
 def listProduct():
