@@ -1,10 +1,11 @@
 from itertools import product
 
-from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, ForeignKey, Enum
 from sqlalchemy.orm import relationship
 from saleapp import db
 from datetime import datetime
 from saleapp import app
+from enum import Enum as UserEnum
 
 """
 lop BaseModel no ke thua lai db.model
@@ -15,6 +16,29 @@ __abstract__ = True => giup no khong tao bang
 class BaseModel(db.Model):
     __abstract__ = True
     id = Column(Integer, primary_key=True, autoincrement=True)
+
+"""
+Tao role de quan ly
+"""
+class UserRole(UserEnum):
+    ADMIN = 1
+    USER = 2
+
+"""
+Tao bang user voi cac cot tuong ung
+"""
+class User(BaseModel):
+    name = Column(String(50), nullable=False)
+    username = Column(String(50), nullable=False, unique=True)
+    password = Column(String(50), nullable=False)
+    avatar = Column(String(100))
+    email = Column(String(50))
+    joined_date = Column(DateTime, default=datetime.now())
+    user_role = Column(Enum(UserRole), default=UserRole.USER)
+
+    def __str__(self):
+        return self.name
+
 """
  category ke thua basemode tuc cung ke thua tu db.model=> no se hieu categoy se dai dien cho lop duoi CSDL
 do Product nam duoi nen de trong dau ''
@@ -51,7 +75,7 @@ class Product(BaseModel):
 #     db.create_all()
 # Sử dụng app.app_context() để tạo bảng
 with app.app_context():
-    #db.create_all()
+    db.create_all()
     """
     them du lieu vao bang bang cac cau lenh nhu ben duoi
     """
@@ -68,34 +92,34 @@ with app.app_context():
     them du lieu vao bang tu tep json
     khi muon test voi session thi khong nen comment lai
     """
-    products = [
-                  {
-                    "id": 1,
-                    "name": "iphone 14",
-                    "description": "Apple, 128GB, RAM: 6GB",
-                    "price": 15000000,
-                    "image": "images/pn1.jpg",
-                    "category_id": 1
-                  },
-                  {
-                    "id": 2,
-                    "name": "iphone 15",
-                    "description": "Apple, 128GB, RAM: 6GB",
-                    "price": 20000000,
-                    "image": "images/pn2.jpg",
-                    "category_id": 1
-                  },
-                  {
-                    "id": 3,
-                    "name": "ipad Pro 11",
-                    "description": "Apple, 128GB, RAM: 6GB",
-                    "price": 14000000,
-                    "image": "images/pn3.jpg",
-                    "category_id": 2
-                  }
-                ]
-    for p in products:
-        prod = Product(name=p['name'],description=p['description'],price=p['price']
-                       ,image=p['image'],category_id=p['category_id'])
-        db.session.add(prod)
+    # products = [
+    #               {
+    #                 "id": 1,
+    #                 "name": "iphone 14",
+    #                 "description": "Apple, 128GB, RAM: 6GB",
+    #                 "price": 15000000,
+    #                 "image": "images/pn1.jpg",
+    #                 "category_id": 1
+    #               },
+    #               {
+    #                 "id": 2,
+    #                 "name": "iphone 15",
+    #                 "description": "Apple, 128GB, RAM: 6GB",
+    #                 "price": 20000000,
+    #                 "image": "images/pn2.jpg",
+    #                 "category_id": 1
+    #               },
+    #               {
+    #                 "id": 3,
+    #                 "name": "ipad Pro 11",
+    #                 "description": "Apple, 128GB, RAM: 6GB",
+    #                 "price": 14000000,
+    #                 "image": "images/pn3.jpg",
+    #                 "category_id": 2
+    #               }
+    #             ]
+    # for p in products:
+    #     prod = Product(name=p['name'],description=p['description'],price=p['price']
+    #                    ,image=p['image'],category_id=p['category_id'])
+    #     db.session.add(prod)
     # db.session.commit()
