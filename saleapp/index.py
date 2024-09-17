@@ -2,9 +2,10 @@ import math
 
 from flask import render_template, request, redirect, url_for
 
-from saleapp import app
+from saleapp import app, login
 import utils
 import cloudinary.uploader # de ho tro upload anh
+from flask_login import login_user, logout_user
 
 
 @app.route("/")
@@ -46,7 +47,7 @@ def user_register():
                     res = cloudinary.uploader.upload(avatar)
                     avatar_path = res['secure_url'] # chu y res['secure_url'] lay duong dan flask cloudinary response data
                 utils.add_user(name=name,username=username,password=password,email=email, avatar=avatar_path)
-                return redirect(url_for('home'))
+                return redirect(url_for('user_signin'))
             else:
                 err_msg = 'Mat khau khong trung nhau!!!'
         except Exception as ex:
@@ -73,6 +74,29 @@ def productDetail(product_id):
     return  render_template('product_detail.html', product=product)
 
 """
+chuc nang dang nhap
+"""
+@app.route('/user-login', methods=['get','post'])
+def user_signin():
+    err_msg = ''
+    if request.method.__eq__('POST'):
+        username = request.form.get('username')
+        password = request.form.get('password')
+        user = utils.check_login(username=username, password=password)
+        if user:
+            """Luc nay da co bien toan duc global current_user bang cach goi login_user"""
+            login_user(user=user)
+            return redirect(url_for('home'))
+        else:
+            err_msg = 'username hoac password khong dung!!!'
+    return render_template('login.html', err_msg=err_msg)
+
+@app.route('/user-logout')
+def user_signout():
+    logout_user() # chi viec goi no se tu dong xoa plugin tich hop san
+    return redirect(url_for('user_signin'))
+
+"""
 su dung @app.context_processor: de no tu dog ap categories vao tat ca cac trang
 """
 @app.context_processor
@@ -80,6 +104,13 @@ def common_response():
     return {
         "categories" : utils.load_categories()
     }
+
+"""
+@login.user_loader() se tu goi khi no dang nhap thanh cong
+"""
+@login.user_loader
+def user_load(user_id):
+    return utils.get_user_by_id(user_id=user_id)
 
 if __name__ == '__main__':
     """
