@@ -29,3 +29,18 @@ function addToCart(id,name,price){
     })
     .catch(error => console.error('Lỗi:', error))
 }
+
+function pay() {
+    if (confirm('Ban muon thanh toan khong?') == true){
+        fetch('/api/pay', {
+            method: 'post'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.code == 200){
+                location.reload()
+            }
+        })
+        .catch(error => console.error('Lỗi:', error))
+    }
+}
