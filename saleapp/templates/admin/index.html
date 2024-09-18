@@ -1,0 +1,20 @@
+<!-- Trang nay se ke thua lai tu trang admin/base.html duoi env/Lib/flask_admin/templates/bootstrap4/admin/base.html -->
+{% extends 'admin/base.html' %}
+{% block body %}
+{% if current_user.is_authenticated %}
+<h3>Welcome {{current_user.name}} to Administration Website</h3>
+{% else %}
+<h2>DANG NHAP TRANG QUAN TRI</h2>
+<form method="post" action="{{url_for('admin_signin')}}">
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" class="form-control" placeholder="Enter username" id="username" name="username" required>
+  </div>
+  <div class="form-group">
+    <label for="pwd">Mat khau</label>
+    <input type="password" class="form-control" placeholder="Enter password" id="pwd" name="password">
+  </div>
+  <button type="submit" class="btn btn-primary">Dang nhap</button>
+</form>
+{% endif %}
+{% endblock %}
