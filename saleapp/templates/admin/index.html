@@ -3,6 +3,74 @@
 {% block body %}
 {% if current_user.is_authenticated %}
 <h3>Welcome {{current_user.name}} to Administration Website</h3>
+<div class="row">
+  <!-- tren may tinh chia ti le 6/6, di dong full 12 -->
+  <div class="col-md-6 col-xs-12">
+    <table class="table">
+      <tr>
+        <th>Ma danh muc</th>
+        <th>Ten danh muc</th>
+        <th>So luong san pham</th>
+      </tr>
+      {% for s in stats %}
+      <tr>
+        <td>{{ s[0] }}</td>
+        <td>{{ s[1] }}</td>
+        <td>{{ s[2] }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  <div class="col-md-6 col-xs-12">
+      <canvas id="myCategoryChart"></canvas>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  let labels = [], info = []
+  let color = []
+  let border = []
+  let r, g, b
+
+  {% for s in stats %}
+    labels.push('{{s[1]}}')
+    info.push('{{s[2]}}')
+
+    r = Math.random()*255
+    g = Math.random()*255
+    b = Math.random()*255
+
+    color.push(`rgba(${r}, ${g}, ${b}, 0.2)`)
+    border.push(`rgba(${r}, ${g}, ${b}, 1)`)
+
+  {% endfor %}
+
+  window.onload = function() {
+    const ctx = document.getElementById('myCategoryChart').getContext('2d')
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Thong ke danh muc theo san pham',
+          data: info,
+          backgroundColor: color,
+          borderColor: border,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+</script>
+
 {% else %}
 <h2>DANG NHAP TRANG QUAN TRI</h2>
 <form method="post" action="{{url_for('admin_signin')}}">

@@ -1,4 +1,4 @@
-
+Template Flask sử dụng Jinja2 để đánh dấu các thẻ template.
 Hoc kien thuc co ban ve flask trong python qua du an web
 - kien thuc python co ban
 - tao web don gian ket noi voi json
@@ -20,3 +20,5 @@ Hoc kien thuc co ban ve flask trong python qua du an web
 - Tao chuc nang gio hang : flask session
     + xay dung chuc nang gio hang va ghi nhan don hang
 - Flask-admin: Tuy chinh template Trang chu va thuc hien dang nhap voi flask-login
+- Flask-admin: Tuy chinh trang chu admin voi thong ke san pham theo danh muc va ve bieu do chartjs
+    co nhieu thu vien ve bieu do nhu goodlejs, o day dung chartjs.org

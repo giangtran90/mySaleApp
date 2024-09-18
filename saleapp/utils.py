@@ -4,6 +4,7 @@ from saleapp import app, db
 from saleapp.models import Category, Product, User, Receipt, ReceiptDetail, UserRole
 from flask_login import current_user # neu dang nhap thi se lay duoc curren_user
 import hashlib # giup bam password
+from sqlalchemy import func # ho tro goi cac ham nhu count, avg
 
 """
 Ham doc file json
@@ -144,3 +145,21 @@ def count_cart(cart):
             'total_quantity': total_quantity,
             'total_amount': total_amount
         }
+
+"""
+    lay danh muc san pham category
+"""
+def category_stats():
+    """
+        SELECT c.id, c.name, count(p.id)
+        FROM category c left outer join product p on c.id = p.category_id
+        GROUP BY c.id, c.name
+        => cau truy van se duoc viet lai bang lenh ben duoi
+        ham count thi dung add_column(func), nguyen tac group by thi lay gi gom nhom nay tru ham ra
+
+        Cach 1: return (Category.query.join(Product, Product.category_id.__eq__(Category.id), isouter=True)
+                    .add_column(func.count(Product.id))
+                    .group_by(Category.id,Category.name).all())
+    """
+    return (db.session.query(Category.id, Category.name, func.count(Product.id))
+            .join(Product, Category.id.__eq__(Product.category_id), isouter=True).group_by(Category.id).all())
