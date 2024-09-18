@@ -9,7 +9,7 @@
   <div class="alert alert-danger">{{ err_msg }}</div>
   {% endif %}
 
-  <form method="post" action="{{ url_for('user_signin') }}">
+  <form method="post">
     <div class="form-group">
       <label for="username">Username</label>
       <input type="text" class="form-control" placeholder="Enter username" id="username" name="username" required>

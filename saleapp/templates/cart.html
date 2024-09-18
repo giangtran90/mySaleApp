@@ -1,10 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'layout/base.html' %}
+
+{% block title %}Gio hang{% endblock %}
+
+{% block content %}
+<h2 class="text-center text-danger">GIO HANG</h2>
+{% if session['cart'] %}
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>Ten san pham</th>
+        <th>Gia</th>
+        <th>So luong</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in session['cart'].values() %}
+      <tr>
+        <td>{{ c.id }}</td>
+        <td>{{ c.name }}</td>
+        <td>{{ c.price }}</td>
+        <td>{{ c.quantity }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+</table>
+<div class="alert alert-info">
+    <h5>Tong so luong san pham: {{cartStat.total_quantity}}</h5>
+    <h5>Tong gia: {{"{:,.1f}".format(cartStat.total_amount)}} VND</h5>
+</div>
+
+{% if current_user.is_authenticated %}
+<input type="button" class="btn btn-danger" value="Thanh toan" onclick="pay()"/>
+{% else %}
+<!-- next: giup sau khi dang nhap no se quay ve trang cart -->
+<a href="{{url_for('user_signin', next='cart')}}">Vui long dang nhap de thanh toan...</a>
+{% endif %}
+
+<br/>
+{% else %}
+<p><i>Khong co san pham trong gio hang!!!</i></p>
+{% endif %}
+<br/>
+{% endblock %}
