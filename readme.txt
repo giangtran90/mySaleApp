@@ -18,3 +18,4 @@ Hoc kien thuc co ban ve flask trong python qua du an web
     => index: user_load voi @login.user_loader() se tu goi khi no dang nhap thanh cong => import login_user tu flask-login
     => login_user(user=user) giup ghi nhan trang thai dang nhap va bo vao current_user
 - Tao chuc nang gio hang : flask session
+    + xay dung chuc nang gio hang va ghi nhan don hang
