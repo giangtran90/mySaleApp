@@ -2,7 +2,7 @@
 Tao doi tuong admin => cung add app vao
 """
 from saleapp import app,db
-from flask_admin import Admin, BaseView, expose
+from flask_admin import Admin, BaseView, expose, AdminIndexView
 """
 moi model se tao 1 trang cho minh
 """
@@ -10,11 +10,7 @@ from flask_admin.contrib.sqla import ModelView
 from saleapp.models import Category,Product,UserRole
 from flask_login import current_user, logout_user
 from flask import redirect
-
-"""
-chay cai nay se tao trang admin => qua index add trang admin vao
-"""
-admin = Admin(app=app, name="E-commerce Administration", template_mode='bootstrap4')
+import utils
 
 class AuthenticatedModelView(ModelView):
     def is_accessible(self):
@@ -55,6 +51,16 @@ class LogoutView(BaseView):
     """
     def is_accessible(self):
         return current_user.is_authenticated
+
+class MyAdminIndex(AdminIndexView):
+    @expose('/')
+    def __index__(self):
+        return self.render('admin/index.html', stats=utils.category_stats())
+
+"""
+chay cai nay se tao trang admin => qua index add trang admin vao
+"""
+admin = Admin(app=app, name="E-commerce Administration", template_mode='bootstrap4', index_view=MyAdminIndex())
 
 """
 Them cac view vao cho trang admin
