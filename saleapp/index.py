@@ -3,6 +3,7 @@ import math
 from flask import render_template, request, redirect, url_for, session, jsonify
 
 from saleapp import app, login
+from saleapp.models import UserRole
 import utils
 import cloudinary.uploader # de ho tro upload anh
 from flask_login import login_user, logout_user, login_required
@@ -143,6 +144,15 @@ def user_signin():
         else:
             err_msg = 'username hoac password khong dung!!!'
     return render_template('login.html', err_msg=err_msg)
+
+@app.route('/admin-login', methods=['post'])
+def admin_signin():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    user = utils.check_login(username=username, password=password, role=UserRole.ADMIN)
+    if user:
+        login_user(user=user)
+    return redirect('/admin')
 
 @app.route('/user-logout')
 def user_signout():

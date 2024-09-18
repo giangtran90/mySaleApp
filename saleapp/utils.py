@@ -1,7 +1,7 @@
 import json, os
 
 from saleapp import app, db
-from saleapp.models import Category, Product, User, Receipt, ReceiptDetail
+from saleapp.models import Category, Product, User, Receipt, ReceiptDetail, UserRole
 from flask_login import current_user # neu dang nhap thi se lay duoc curren_user
 import hashlib # giup bam password
 
@@ -106,11 +106,12 @@ def add_user(name, username, password, **kwargs):
 """
 check dang nhap, chu y password dang ky ma hoa the nao thi check cung nhu vay
 """
-def check_login(username, password):
+def check_login(username, password, role=UserRole.USER):
     if username and password:
         password = hashlib.md5(password.strip().encode('utf-8')).hexdigest()
         return User.query.filter(User.username.__eq__(username.strip()),
-                                 User.password.__eq__(password)).first()
+                                 User.password.__eq__(password),
+                                 User.user_role.__eq__(role)).first()
 
 def get_user_by_id(user_id):
     return User.query.get(user_id)
