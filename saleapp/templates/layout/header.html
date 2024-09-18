@@ -54,7 +54,7 @@
       {% endif %}
       <li class="nav-item">
         <a class="nav-link text-success"
-           href="#">Gio hang <span class="badge badge-info" id="cartCounter">0</span></a>
+           href="{{url_for('cart')}}">Gio hang <span class="badge badge-info" id="cartCounter">{{cartStat.total_quantity}}</span></a>
       </li>
     </ul>
   </div>

@@ -5,7 +5,7 @@ from flask import render_template, request, redirect, url_for, session, jsonify
 from saleapp import app, login
 import utils
 import cloudinary.uploader # de ho tro upload anh
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, login_required
 
 
 @app.route("/")
@@ -74,6 +74,13 @@ def productDetail(product_id):
     return  render_template('product_detail.html', product=product)
 
 """
+tao link ket noi trang cart
+"""
+@app.route('/cart')
+def cart():
+    return render_template('cart.html')
+
+"""
 tao add cart
 """
 @app.route('/api/add-cart', methods=['post'])
@@ -107,6 +114,17 @@ def add_to_cart():
     strResultCart = jsonify(utils.count_cart(cart))
     return strResultCart
 
+"""Chuc nang tra tien dung js xu ly"""
+@app.route('/api/pay', methods = ['post'])
+@login_required
+def pay():
+    try:
+        utils.add_receipt(session.get('cart'))
+        del session['cart'] # sau khi thanh toan no se xoa session
+    except:
+        return jsonify({'code': 400})
+    return jsonify({'code': 200})
+
 """
 chuc nang dang nhap
 """
@@ -120,7 +138,8 @@ def user_signin():
         if user:
             """Luc nay da co bien toan duc global current_user bang cach goi login_user"""
             login_user(user=user)
-            return redirect(url_for('home'))
+            next = request.args.get('next', 'home') # neu args co next thi lay next khong thi se lay home
+            return redirect(url_for(next))
         else:
             err_msg = 'username hoac password khong dung!!!'
     return render_template('login.html', err_msg=err_msg)
@@ -136,7 +155,8 @@ su dung @app.context_processor: de no tu dog ap categories vao tat ca cac trang
 @app.context_processor
 def common_response():
     return {
-        "categories" : utils.load_categories()
+        "categories" : utils.load_categories(),
+        "cartStat": utils.count_cart(session.get('cart'))
     }
 
 """

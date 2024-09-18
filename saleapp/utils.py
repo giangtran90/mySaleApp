@@ -1,7 +1,8 @@
 import json, os
 
 from saleapp import app, db
-from saleapp.models import Category, Product, User
+from saleapp.models import Category, Product, User, Receipt, ReceiptDetail
+from flask_login import current_user # neu dang nhap thi se lay duoc curren_user
 import hashlib # giup bam password
 
 """
@@ -114,6 +115,20 @@ def check_login(username, password):
 def get_user_by_id(user_id):
     return User.query.get(user_id)
 
+def add_receipt(cart):
+    if cart:
+        """lay doi tuong receipt hien dang dang nhap"""
+        receipt = Receipt(user = current_user)
+
+        for c in cart.values():
+            d = ReceiptDetail(receipt = receipt,
+                              product_id = c['id'],
+                              quantity = c['quantity'],
+                              unit_price = c['price'])
+            db.session.add(d)
+
+        db.session.commit()
+
 """
 Tao ham count chua cac thong tin ve so luong, don gia
 """
@@ -124,8 +139,7 @@ def count_cart(cart):
             total_quantity += c['quantity']
             total_amount += c['quantity'] * c['price']
 
-        result = {
+    return {
             'total_quantity': total_quantity,
             'total_amount': total_amount
         }
-    return result
