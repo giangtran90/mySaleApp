@@ -37,6 +37,7 @@ class User(BaseModel, UserMixin):
     email = Column(String(50))
     joined_date = Column(DateTime, default=datetime.now())
     user_role = Column(Enum(UserRole), default=UserRole.USER)
+    receipts = relationship('Receipt', backref='user', lazy=True)
 
     def __str__(self):
         return self.name
@@ -68,16 +69,31 @@ class Product(BaseModel):
     active = Column(Boolean, default=True)
     created_date = Column(DateTime, default=datetime.now())
     category_id = Column(Integer, ForeignKey(Category.id), nullable=False) # co 2 cach truyen vao cho foreignKey neu trong dau'' => dung ten bang 'cacategory.id'
+    receipt_details = relationship('ReceiptDetail', backref='product', lazy=True)
 
     # overwrite toString
     def __str__(self):
         return self.name
 
+class Receipt(BaseModel):
+    created_date = Column(DateTime, default=datetime.now())
+    user_id = Column(Integer, ForeignKey(User.id), nullable=False)
+    receipt_details = relationship('ReceiptDetail', backref='receipt', lazy=True)
+
+"""
+Tao bang trung gian: receipt_id va product_id la 2 khoa ngoai de ket noi(no se thanh 2 khoa chinh cua bang trung gian)
+"""
+class ReceiptDetail(db.Model):
+    receipt_id = Column(Integer, ForeignKey(Receipt.id), nullable=False, primary_key=True)
+    product_id = Column(Integer, ForeignKey(Product.id), nullable=False, primary_key=True)
+    quantity = Column(Integer, default=0)
+    unit_price = Column(Float, default=0)
+
 # if __name__ == '__main__':
 #     db.create_all()
 # Sử dụng app.app_context() để tạo bảng
 with app.app_context():
-    # db.create_all()
+    db.create_all()
     """
     them du lieu vao bang bang cac cau lenh nhu ben duoi
     """
@@ -94,34 +110,34 @@ with app.app_context():
     them du lieu vao bang tu tep json
     khi muon test voi session thi khong nen comment lai
     """
-    products = [
-                  {
-                    "id": 1,
-                    "name": "iphone 14",
-                    "description": "Apple, 128GB, RAM: 6GB",
-                    "price": 15000000,
-                    "image": "images/pn1.jpg",
-                    "category_id": 1
-                  },
-                  {
-                    "id": 2,
-                    "name": "iphone 15",
-                    "description": "Apple, 128GB, RAM: 6GB",
-                    "price": 20000000,
-                    "image": "images/pn2.jpg",
-                    "category_id": 1
-                  },
-                  {
-                    "id": 3,
-                    "name": "ipad Pro 11",
-                    "description": "Apple, 128GB, RAM: 6GB",
-                    "price": 14000000,
-                    "image": "images/pn3.jpg",
-                    "category_id": 2
-                  }
-                ]
-    for p in products:
-        prod = Product(name=p['name'],description=p['description'],price=p['price']
-                       ,image=p['image'],category_id=p['category_id'])
-        db.session.add(prod)
+    # products = [
+    #               {
+    #                 "id": 1,
+    #                 "name": "iphone 14",
+    #                 "description": "Apple, 128GB, RAM: 6GB",
+    #                 "price": 15000000,
+    #                 "image": "images/pn1.jpg",
+    #                 "category_id": 1
+    #               },
+    #               {
+    #                 "id": 2,
+    #                 "name": "iphone 15",
+    #                 "description": "Apple, 128GB, RAM: 6GB",
+    #                 "price": 20000000,
+    #                 "image": "images/pn2.jpg",
+    #                 "category_id": 1
+    #               },
+    #               {
+    #                 "id": 3,
+    #                 "name": "ipad Pro 11",
+    #                 "description": "Apple, 128GB, RAM: 6GB",
+    #                 "price": 14000000,
+    #                 "image": "images/pn3.jpg",
+    #                 "category_id": 2
+    #               }
+    #             ]
+    # for p in products:
+    #     prod = Product(name=p['name'],description=p['description'],price=p['price']
+    #                    ,image=p['image'],category_id=p['category_id'])
+    #     db.session.add(prod)
     # db.session.commit()
