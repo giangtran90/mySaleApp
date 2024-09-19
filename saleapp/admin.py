@@ -11,6 +11,7 @@ from saleapp.models import Category,Product,UserRole
 from flask_login import current_user, logout_user
 from flask import redirect
 import utils
+from flask import request
 
 class AuthenticatedModelView(ModelView):
     def is_accessible(self):
@@ -52,6 +53,26 @@ class LogoutView(BaseView):
     def is_accessible(self):
         return current_user.is_authenticated
 
+"""
+    Tao view StatsView chi co khi dang nhap va co quyen admin moi thay duoc
+"""
+class StatsView(BaseView):
+    @expose('/')
+    def __index__(self):
+        kw = request.args.get('kw')
+        from_date = request.args.get('from_date')
+        to_date = request.args.get('to_date')
+        stats = utils.product_stats(kw = kw, from_date = from_date, to_date = to_date)
+        # import pdb
+        # pdb.set_trace()
+        return self.render('admin/stats.html', stats=stats)
+
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.user_role == UserRole.ADMIN
+
+"""
+    Giup ghi de len template admin
+"""
 class MyAdminIndex(AdminIndexView):
     @expose('/')
     def __index__(self):
@@ -67,4 +88,5 @@ Them cac view vao cho trang admin
 """
 admin.add_view(AuthenticatedModelView(Category,db.session))
 admin.add_view(ProductView(Product,db.session))
+admin.add_view(StatsView(name='Stats'))
 admin.add_view(LogoutView(name='Logout'))
