@@ -115,6 +115,17 @@ def add_to_cart():
     strResultCart = jsonify(utils.count_cart(cart))
     return strResultCart
 
+@app.route('/api/update-cart', methods=['put'])
+def update_cart():
+    data = request.json
+    id = str(data.get('id'))
+    quantity = data.get('quantity')
+    cart = session.get("cart")
+    if cart and id in cart:
+        cart[id]['quantity'] = quantity
+    session['cart'] = cart
+    return jsonify(utils.count_cart(cart))
+
 """Chuc nang tra tien dung js xu ly"""
 @app.route('/api/pay', methods = ['post'])
 @login_required
