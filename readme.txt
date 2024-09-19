@@ -24,3 +24,4 @@ Hoc kien thuc co ban ve flask trong python qua du an web
     co nhieu thu vien ve bieu do nhu goodlejs, o day dung chartjs.org
 - Xay dung chuc nang thong ke bao cao doanh thu va ve bieu do bang chartjs
   Tuong tu thong ke theo thang va ve bieu do
+- Thuc hien chuc nang cap nhat gio hang dung Ajax
