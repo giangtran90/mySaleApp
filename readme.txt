@@ -22,3 +22,4 @@ Hoc kien thuc co ban ve flask trong python qua du an web
 - Flask-admin: Tuy chinh template Trang chu va thuc hien dang nhap voi flask-login
 - Flask-admin: Tuy chinh trang chu admin voi thong ke san pham theo danh muc va ve bieu do chartjs
     co nhieu thu vien ve bieu do nhu goodlejs, o day dung chartjs.org
+- Xay dung chuc nang thong ke bao cao doanh thu va ve bieu do bang chartjs
