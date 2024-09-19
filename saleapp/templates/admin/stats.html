@@ -1,0 +1,92 @@
+{% extends 'admin/base.html' %}
+{% block body %}
+<h1 class="text-center text-danger">THONG KE DOANH THU</h1>
+<div class="row">
+    <div class="col-md-5 col-xs-12">
+        <table class="table">
+            <tr>
+                <th>Ma SP</th>
+                <th>Ten SP</th>
+                <th>Doanh thu</th>
+            </tr>
+            {% for s in stats %}
+            <tr>
+                <td>{{s[0]}}</td>
+                <td>{{s[1]}}</td>
+                <td>
+                    {% if s[2] %}
+                    {{"{:,.1f}".format(s[2])}} VND
+                    {% else %}
+                    0 VND
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="col-md-7 col-xs-12">
+        <form>
+            <div class="form-group">
+                <input type="text" class="form-control" name="kw" placeholder="Nhap tu khoa..." />
+            </div>
+            <div class="form-group">
+                <input type="date" class="form-control" name="from_date"/>
+            </div>
+            <div class="form-group">
+                <input type="date" class="form-control" name="to_date"/>
+            </div>
+            <input type="submit" class="btn btn-info" value="Thong ke"/>
+        </form>
+        <canvas id="productChartId"></canvas>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  let labels = [], info = []
+  let color = []
+  let border = []
+  let r, g, b
+
+  {% for s in stats %}
+    {% if s[2] %}
+    labels.push('{{s[1]}}')
+    info.push('{{s[2]}}')
+
+    r = Math.random()*255
+    g = Math.random()*255
+    b = Math.random()*255
+
+    color.push(`rgba(${r}, ${g}, ${b}, 0.2)`)
+    border.push(`rgba(${r}, ${g}, ${b}, 1)`)
+    {% endif %}
+  {% endfor %}
+
+  window.onload = function() {
+    const ctx = document.getElementById('productChartId').getContext('2d')
+    loadChart(ctx,'bar',labels,info,color,border)
+  }
+
+ function loadChart(ctx,type,labels,data,backgroundColor,borderColor){
+    new Chart(ctx, {
+      type: type,
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Thong ke doanh thu theo san pham',
+          data: info,
+          backgroundColor: color,
+          borderColor: border,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+ }
+</script>
+{% endblock %}
