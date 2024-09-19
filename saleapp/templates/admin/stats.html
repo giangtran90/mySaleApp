@@ -40,11 +40,37 @@
         <canvas id="productChartId"></canvas>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-md-5 col-xs-12">
+        <table class="table">
+            <tr>
+                <th>Thang</th>
+                <th>Doanh thu</th>
+            </tr>
+            {% for ms in month_stats %}
+            <tr>
+                <td>{{ms[0]}}</td>
+                <td>{{"{:,.1f}".format(ms[1])}} VND</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="col-md-7 col-xs-12">
+        <form>
+            <div class="form-group">
+                <input type="number" min="2000" class="form-control" name="year" placeholder="Nhap nam..." />
+            </div>
+            <input type="submit" class="btn btn-info" value="Thong ke">
+        </form>
+        <canvas id="productMonthChartId"></canvas>
+    </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  let labels = [], info = []
-  let color = []
-  let border = []
+  let labels = [], info = [], labels2 = [], info2 = []
+  let color = [], color2 = []
+  let border = [], border2 = []
   let r, g, b
 
   {% for s in stats %}
@@ -61,19 +87,38 @@
     {% endif %}
   {% endfor %}
 
+  {% for ms in month_stats %}
+    labels2.push('{{ms[0]}}')
+    info2.push('{{ms[1]}}')
+
+    r = Math.random()*255
+    g = Math.random()*255
+    b = Math.random()*255
+
+    color2.push(`rgba(${r}, ${g}, ${b}, 0.2)`)
+    border2.push(`rgba(${r}, ${g}, ${b}, 1)`)
+  {% endfor %}
+  console.log(info2)
+
   window.onload = function() {
     const ctx = document.getElementById('productChartId').getContext('2d')
-    loadChart(ctx,'bar',labels,info,color,border)
+    const ctx2 = document.getElementById('productMonthChartId').getContext('2d')
+
+    let label1 = 'Thong ke doanh thu theo san pham'
+    loadChart(ctx,'bar',labels,info,color,border,label1)
+
+    let label2 = 'Thong ke doanh thu theo thang'
+    loadChart(ctx2,'line',labels2,info2,color2,border2,label2)
   }
 
- function loadChart(ctx,type,labels,data,backgroundColor,borderColor){
+ function loadChart(ctx,type,labels,data,backgroundColor,borderColor,label){
     new Chart(ctx, {
       type: type,
       data: {
         labels: labels,
         datasets: [{
-          label: 'Thong ke doanh thu theo san pham',
-          data: info,
+          label: label,
+          data: data,
           backgroundColor: color,
           borderColor: border,
           borderWidth: 1
