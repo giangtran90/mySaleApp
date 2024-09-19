@@ -81,3 +81,33 @@ function updateCart(id, obj){
     })
     .catch(error => console.error('Lỗi:', error))
 }
+
+function deleteProductInCart(id){
+    const formatter = new Intl.NumberFormat('vi-VN', {
+      style: 'decimal',
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1
+    });
+    if (confirm("Ban co chac muon xoa san pham") == true){
+        fetch('/api/delete-cart/' + id, {
+            method: 'delete',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            let productId = document.getElementById('product-' + id)
+            productId.style.display = "none"
+
+            let counter = document.getElementsByClassName('cart-counter')
+            for (let i=0; i < counter.length; i++){
+                counter[i].innerText = data.total_quantity
+            }
+
+            let totalAmount = document.getElementById('total-amount')
+            totalAmount.innerText = formatter.format(data.total_amount) + ` VND`
+        })
+        .catch(error => console.error('Lỗi:', error))
+    }
+}
