@@ -1,6 +1,8 @@
 """
 Tao doi tuong admin => cung add app vao
 """
+from calendar import month
+
 from saleapp import app,db
 from flask_admin import Admin, BaseView, expose, AdminIndexView
 """
@@ -12,6 +14,7 @@ from flask_login import current_user, logout_user
 from flask import redirect
 import utils
 from flask import request
+from datetime import datetime
 
 class AuthenticatedModelView(ModelView):
     def is_accessible(self):
@@ -62,10 +65,16 @@ class StatsView(BaseView):
         kw = request.args.get('kw')
         from_date = request.args.get('from_date')
         to_date = request.args.get('to_date')
+        year = request.args.get('year')
+        if year:
+            month_stats = utils.product_month_stats(year=year)
+        else:
+            year = datetime.now().year
+            month_stats = utils.product_month_stats(year=year)
         stats = utils.product_stats(kw = kw, from_date = from_date, to_date = to_date)
         # import pdb
         # pdb.set_trace()
-        return self.render('admin/stats.html', stats=stats)
+        return self.render('admin/stats.html', stats=stats, month_stats=month_stats)
 
     def is_accessible(self):
         return current_user.is_authenticated and current_user.user_role == UserRole.ADMIN

@@ -5,6 +5,7 @@ from saleapp.models import Category, Product, User, Receipt, ReceiptDetail, User
 from flask_login import current_user # neu dang nhap thi se lay duoc curren_user
 import hashlib # giup bam password
 from sqlalchemy import func # ho tro goi cac ham nhu count, avg
+from sqlalchemy.sql import extract # ho tro lay thang,nam...
 
 """
 Ham doc file json
@@ -179,3 +180,9 @@ def product_stats(kw=None, from_date=None, to_date=None):
     if to_date:
         p = p.filter(Receipt.created_date.__le__(to_date))
     return p.all()
+
+def product_month_stats(year):
+    return db.session.query(extract('month', Receipt.created_date), func.sum(ReceiptDetail.quantity * ReceiptDetail.unit_price))\
+                    .join(ReceiptDetail, ReceiptDetail.receipt_id.__eq__(Receipt.id))\
+                    .filter(extract('year', Receipt.created_date) == year)\
+                    .group_by(extract('month', Receipt.created_date)).order_by(extract('month', Receipt.created_date)).all()
