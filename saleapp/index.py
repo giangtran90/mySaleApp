@@ -126,6 +126,14 @@ def update_cart():
     session['cart'] = cart
     return jsonify(utils.count_cart(cart))
 
+@app.route('/api/delete-cart/<product_id>', methods = ['delete'])
+def delete_product_in_cart(product_id):
+    cart = session.get("cart")
+    if cart and product_id in cart:
+        del cart[product_id] # xoa doi tuong cart[product_id]
+    session['cart'] = cart
+    return jsonify(utils.count_cart(cart))
+
 """Chuc nang tra tien dung js xu ly"""
 @app.route('/api/pay', methods = ['post'])
 @login_required
