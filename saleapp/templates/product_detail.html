@@ -23,7 +23,7 @@
     <input type="button" class="btn btn-info" value="Binh luan" onclick="addComment({{product.id}})" />
 </div>
 {% else %}
-<a href="{{url_for('user_signin')}}" class="font-italic text-info">Vui long dang nhap de binh luan!!!</a>
+<a href="{{url_for('user_signin', next='productDetail', product_id=product.id)}}" class="font-italic text-info">Vui long dang nhap de binh luan!!!</a>
 {% endif %}
 <hr>
 {% if comments %}
