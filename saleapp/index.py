@@ -72,7 +72,15 @@ def listProduct():
 @app.route("/products/<int:product_id>")
 def productDetail(product_id):
     product = utils.product_detail(product_id)
-    return  render_template('product_detail.html', product=product)
+    comments = utils.load_comments(product_id, page=int(request.args.get("page",1)))
+    """
+    lay tong so trang comment
+    """
+    counter = utils.count_comments(product_id)
+    # import pdb
+    # pdb.set_trace()
+
+    return  render_template('product_detail.html', product=product, comments=comments, pages = math.ceil(counter/app.config['PAGE_COMMENT_SIZE']))
 
 @app.route('/api/comment-product', methods=['post'])
 @login_required

@@ -20,6 +20,10 @@ cai dat PAGE_SIZE de sau dung chung
 """
 app.config['PAGE_SIZE'] = 4
 """
+cai dat PAGE_COMMENT_SIZE de sau dung chung
+"""
+app.config['PAGE_COMMENT_SIZE'] = 6
+"""
 Can cau hinh ket noi
 """
 db = SQLAlchemy(app=app)
