@@ -74,6 +74,29 @@ def productDetail(product_id):
     product = utils.product_detail(product_id)
     return  render_template('product_detail.html', product=product)
 
+@app.route('/api/comment-product', methods=['post'])
+@login_required
+def commentProduct():
+    data = request.json
+    content = data.get('content')
+    product_id = data.get('product_id')
+
+    # import pdb
+    # pdb.set_trace()
+    try:
+        c = utils.addComment(content=content, product_id=product_id)
+    except:
+        return {'status': 404, 'err_msg': 'Chuong trinh dang loi'}
+    return {'status': 201, 'comment': {
+        'id': c.id,
+        'content': c.content,
+        'created_date': c.created_date,
+        'user': {
+            'username': current_user.username,
+            'avatar': current_user.avatar
+        }
+    }}
+
 """
 tao link ket noi trang cart
 """

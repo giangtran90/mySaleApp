@@ -1,7 +1,7 @@
 import json, os
 
 from saleapp import app, db
-from saleapp.models import Category, Product, User, Receipt, ReceiptDetail, UserRole
+from saleapp.models import Category, Product, User, Receipt, ReceiptDetail, UserRole, Comment
 from flask_login import current_user # neu dang nhap thi se lay duoc curren_user
 import hashlib # giup bam password
 from sqlalchemy import func # ho tro goi cac ham nhu count, avg
@@ -186,3 +186,11 @@ def product_month_stats(year):
                     .join(ReceiptDetail, ReceiptDetail.receipt_id.__eq__(Receipt.id))\
                     .filter(extract('year', Receipt.created_date) == year)\
                     .group_by(extract('month', Receipt.created_date)).order_by(extract('month', Receipt.created_date)).all()
+
+def addComment(content, product_id):
+    comment = Comment(content = content,
+                      product_id = product_id,
+                      user = current_user)
+    db.session.add(comment)
+    db.session.commit()
+    return comment
