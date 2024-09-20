@@ -189,6 +189,8 @@ def user_signin():
         if user:
             """Luc nay da co bien toan duc global current_user bang cach goi login_user"""
             login_user(user=user)
+            if 'product_id' in request.args:
+                return redirect(url_for(request.args.get('next', 'productDetail'),product_id=request.args.get('product_id')))
             next = request.args.get('next', 'home') # neu args co next thi lay next khong thi se lay home
             return redirect(url_for(next))
         else:
