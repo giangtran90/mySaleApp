@@ -111,3 +111,42 @@ function deleteProductInCart(id){
         .catch(error => console.error('Lỗi:', error))
     }
 }
+
+function addComment(productId){
+    let content = document.getElementById('commentId')
+    console.log(content.value)
+    if (content != null){
+        fetch('/api/comment-product', {
+            method: 'post',
+            body: JSON.stringify({
+                'content': content.value,
+                'product_id': parseInt(productId)
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            if (data.status == 201){
+                let c = data.comment
+                let area = document.getElementById('commentArea')
+                area.innerHTML = `
+                    <div class="row">
+                        <div class="col-md-1 col-xs-4">
+                            <img src="${c.user.avatar}" class="img-fluid rounded-circle" width="50" alt="demo">
+                        </div>
+                        <div class="col-md-11 col-xs-8">
+                            <p>${c.content}</p>
+                            <p><em>${c.created_date}</em></p>
+                        </div>
+                    </div>
+                ` + area.innerHTML
+            } else {
+                alert(data.err_msg)
+            }
+        })
+        .catch(error => console.error('Lỗi:', error))
+    }
+}
