@@ -194,3 +194,13 @@ def addComment(content, product_id):
     db.session.add(comment)
     db.session.commit()
     return comment
+
+"""de phan trang comment truoc het ta lay toan bo comment ra"""
+def load_comments(product_id, page = 1):
+    page_size = app.config['PAGE_COMMENT_SIZE']
+    start = (page - 1) * page_size
+    end = start + page_size
+    return Comment.query.filter(Comment.product_id.__eq__(product_id)).order_by(-Comment.id).slice(start, end).all()
+
+def count_comments(product_id):
+    return Comment.query.filter(Comment.product_id.__eq__(product_id)).count()

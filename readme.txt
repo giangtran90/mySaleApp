@@ -36,4 +36,5 @@ Hoc kien thuc co ban ve flask trong python qua du an web
   Thuc hien xoa san pham cung su dung Ajax
   branch: feature/20240919_chuc_nang_cap_nhat_gio_hang
 - Tao trang chi tiet san pham va thuc hien chuc nang binh luan
+  Thuc hien phan trang bang cach nap load lai trang: dung thu vien momentjs de chuyen ngay thang dang binh luan
   branch: feature/20240919_chi_tiet_sp_binh_luan
